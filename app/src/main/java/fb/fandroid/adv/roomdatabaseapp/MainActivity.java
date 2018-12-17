@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fb.fandroid.adv.roomdatabaseapp.database.Album;
+import fb.fandroid.adv.roomdatabaseapp.database.AlbumSong;
 import fb.fandroid.adv.roomdatabaseapp.database.MusicDao;
+import fb.fandroid.adv.roomdatabaseapp.database.Song;
 
 public class MainActivity extends AppCompatActivity {
     private Button mAddBtn;
@@ -51,13 +53,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private List<Album> createAlbums() {
-        List<Album> albums = new ArrayList<>(10);
-        for (int i = 0; i < 30; i++) {
+        List<Album> albums = new ArrayList<>(3);
+        for (int i = 0; i < 3; i++) {
             albums.add(new Album(i, "album " + i, "release" + System.currentTimeMillis()));
         }
 
         return albums;
     }
+    private List<Song> createSongs(){
+
+        List<Song> songs =new ArrayList<>(3);
+        for (int i=0;i<3;i++){
+            songs.add(new Song(i,"song "+i,"duration"+System.currentTimeMillis()));
+        }
+     return songs;
+    }
+
+    private List<AlbumSong> createAlbumSongs(){
+        List<AlbumSong> albumSongs = new ArrayList<>(3);
+        for (int i=0;i<3;i++){
+
+        }
+        return albumSongs;
+    }
+
 
     private void showToast(List<Album> albums) {
         StringBuilder builder = new StringBuilder();
@@ -65,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             builder.append(albums.get(i).toString()).append("\n");
         }
 
-        Toast.makeText(this, builder.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, builder.toString(), Toast.LENGTH_LONG).show();
 
     }
 }
