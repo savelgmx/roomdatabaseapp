@@ -27,6 +27,10 @@ public interface MusicDao {
     void insertSongs(List<Song> songs);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertSong(Song song);
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void setLinksAlbumSongs(List<AlbumSong> linksAlbumSongs);
 
     @Query("select * from album")
@@ -40,6 +44,10 @@ public interface MusicDao {
 
     @Query("select * from song")
     List<Song> getSongs();
+
+    @Query("select * from song")
+    Cursor getSongsCursor();
+
 
     @Delete
     void deleteAlbum(Album album);
