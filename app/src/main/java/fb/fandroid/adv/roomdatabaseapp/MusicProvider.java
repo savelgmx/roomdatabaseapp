@@ -14,7 +14,7 @@ import fb.fandroid.adv.roomdatabaseapp.database.MusicDao;
 import fb.fandroid.adv.roomdatabaseapp.database.MusicDatabase;
 
 public class MusicProvider extends ContentProvider {
-
+//TODO По аналогии добавить в MusicProvider работу с таблицами Songs и AlbumSongs.
     private static final String TAG = MusicProvider.class.getSimpleName();
 
     private static final String AUTHORITY = "com.elegion.roomdatabase.musicprovider";
