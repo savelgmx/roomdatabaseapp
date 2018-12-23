@@ -8,6 +8,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import fb.fandroid.adv.roomdatabaseapp.database.Album;
 import fb.fandroid.adv.roomdatabaseapp.database.MusicDao;
@@ -110,6 +111,8 @@ public class MusicProvider extends ContentProvider {
 
     @Override
     public Uri insert(@NonNull Uri uri, ContentValues values) {
+
+        Log.d("Roomdatabaseapp","Music Provider insert method for Albums called");
         if (URI_MATCHER.match(uri) == ALBUM_TABLE_CODE && isValuesValid(values)) {
             Album album = new Album();
             Integer id = values.getAsInteger("id");

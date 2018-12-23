@@ -2,6 +2,7 @@ package fb.fandroid.adv.roomdatabaseapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         mAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("Roomdatabaseapp","MainActivity insertAlbums(createAlbums) called");
+
                 musicDao.insertAlbums(createAlbums());
             }
         });
