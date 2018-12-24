@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     Изучить реализацию методов query()/insert()/update()/delete() в MusicProvider
     По аналогии добавить в MusicProvider работу с таблицами Songs и AlbumSongs.
 */
-
+//TODO insertAlbumSongs с сохраением целостности
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Roomdatabaseapp","MainActivity insertAlbums(createAlbums) called");
 
                 musicDao.insertAlbums(createAlbums());
+                musicDao.insertSongs(createSongs());
+
+
             }
         });
 
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         mGetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showToast(musicDao.getAlbums());
+                showToast(musicDao.getAlbums(),musicDao.getSongs());
             }
         });
 
@@ -81,11 +84,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void showToast(List<Album> albums) {
+    private void showToast(List<Album> albums,List<Song> songs) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0, size = albums.size(); i < size; i++) {
             builder.append(albums.get(i).toString()).append("\n");
         }
+        for (int i=0,size=songs.size();i<size;i++)  {
+            builder.append(songs.get(i).toString()).append("\n");
+        }
+
 
         Toast.makeText(this, builder.toString(), Toast.LENGTH_LONG).show();
 

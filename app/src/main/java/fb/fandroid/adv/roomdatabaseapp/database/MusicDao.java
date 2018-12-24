@@ -32,7 +32,7 @@ public interface MusicDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void setLinksAlbumSongs(List<AlbumSong> linksAlbumSongs);
+    void insertAlbumSongs(List<AlbumSong> albumSongs);
 
     @Query("select * from album")
     List<Album> getAlbums();
