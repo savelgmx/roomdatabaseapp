@@ -37,6 +37,11 @@ public interface MusicDao {
     @Query("select * from album")
     List<Album> getAlbums();
 
+
+    @Query("select id from album where id = :albumId")
+    int getAlbumIdWithId(int albumId);
+
+
     @Query("select * from album")
     Cursor getAlbumsCursor();
 
@@ -46,15 +51,22 @@ public interface MusicDao {
     @Query("select * from song")
     List<Song> getSongs();
 
+
+  @Query("select id from song where id=:songId")
+    int getSongIdWith(int songId);
+
     @Query("select * from song")
     Cursor getSongsCursor();
 
+    @Query("select *from song where id=:songId")
+    Cursor getSongWithIdCursor(int songId);
+
+    @Query("select *from AlbumSong")
+    List<AlbumSong> getAlbumSongs();
 
     @Query("Select * from AlbumSong where album_id=:albumId and song_id= :songId")
     Cursor getAlbumSongsWithAlbumIdAndSongId(int albumId,int songId);
 
-    @Delete
-    void deleteAlbum(Album album);
 
     //получить список песен переданного id альбома
     @Query("select * from song inner join albumsong on song.id = albumsong.song_id where album_id = :albumId")
@@ -71,6 +83,8 @@ public interface MusicDao {
     int updateAlbumSonginfo(AlbumSong albumSong);
 
 
+    @Delete
+    void deleteAlbum(Album album);
     //удалить альбом по id
     @Query("DELETE FROM album where id = :albumId")
     int deleteAlbumById(int albumId);

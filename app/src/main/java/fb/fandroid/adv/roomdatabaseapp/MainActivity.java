@@ -19,14 +19,15 @@ public class MainActivity extends AppCompatActivity {
     private Button mAddBtn;
     private Button mGetBtn;
 
-/*
-    В таблицы Album, Songs, AlbumSongs добавить генерацию данных, примерно 3 записи.
-            (см. пример генерации в методе MainActivity#createAlbums()) по кнопке Add.
-    В MusicDao - query, insert, update, delete методы для таблиц Songs и AlbumSongs по примеру методов для таблицы Album.
-    При нажатии на кнопку Get показывать тост с содержимым всех 3х таблиц.(3*3 записей)
-    Изучить реализацию методов query()/insert()/update()/delete() в MusicProvider
-    По аналогии добавить в MusicProvider работу с таблицами Songs и AlbumSongs.
-*/
+
+    /*
+        В таблицы Album, Songs, AlbumSongs добавить генерацию данных, примерно 3 записи.
+                (см. пример генерации в методе MainActivity#createAlbums()) по кнопке Add.
+        В MusicDao - query, insert, update, delete методы для таблиц Songs и AlbumSongs по примеру методов для таблицы Album.
+        При нажатии на кнопку Get показывать тост с содержимым всех 3х таблиц.(3*3 записей)
+        Изучить реализацию методов query()/insert()/update()/delete() в MusicProvider
+        По аналогии добавить в MusicProvider работу с таблицами Songs и AlbumSongs.
+    */
 //TODO insertAlbumSongs с сохраением целостности
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
                 musicDao.insertAlbums(createAlbums());
                 musicDao.insertSongs(createSongs());
+                 musicDao.insertAlbumSongs(createAlbumSongs());
 
 
             }
@@ -52,12 +54,11 @@ public class MainActivity extends AppCompatActivity {
         mGetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showToast(musicDao.getAlbums(),musicDao.getSongs());
+                showToast(musicDao.getAlbums(),musicDao.getSongs(),musicDao.getAlbumSongs());
             }
         });
 
     }
-
     private List<Album> createAlbums() {
         List<Album> albums = new ArrayList<>(3);
         for (int i = 0; i < 3; i++) {
@@ -77,14 +78,24 @@ public class MainActivity extends AppCompatActivity {
 
     private List<AlbumSong> createAlbumSongs(){
         List<AlbumSong> albumSongs = new ArrayList<>(3);
+        final MusicDao musicDao = ((AppDelegate) getApplicationContext()).getMusicDatabase().getMusicDao();
         for (int i=0;i<3;i++){
+            //сначала выдергиваем album_id из таблицы Album  и song_id из таблицы Song
+            //и только потом добавляем их
+            //для Album
+
+            int albumId=musicDao.getAlbumIdWithId(i);
+            int songId=musicDao.getSongIdWith(i);
+            Log.d("Roomdatabaseapp","albumId="+albumId+" songId="+songId);
+
+            albumSongs.add(new AlbumSong(i, albumId, songId)); //id,album_d,song_id
 
         }
         return albumSongs;
     }
 
 
-    private void showToast(List<Album> albums,List<Song> songs) {
+    private void showToast(List<Album> albums,List<Song> songs,List<AlbumSong> albumSongs) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0, size = albums.size(); i < size; i++) {
             builder.append(albums.get(i).toString()).append("\n");
@@ -93,8 +104,10 @@ public class MainActivity extends AppCompatActivity {
             builder.append(songs.get(i).toString()).append("\n");
         }
 
-
-        Toast.makeText(this, builder.toString(), Toast.LENGTH_LONG).show();
+        for (int i=0,size=songs.size();i<size;i++) {
+            builder.append(songs.get(i).toString()).append("\n");
+        }
+            Toast.makeText(this, builder.toString(), Toast.LENGTH_LONG).show();
 
     }
 }
