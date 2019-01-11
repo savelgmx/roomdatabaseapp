@@ -56,7 +56,7 @@ public interface MusicDao {
     int getSongIdWith(int songId);
 
     @Query("select * from song")
-    Cursor getSongsCursor();
+    Cursor getSongCursor();
 
     @Query("select *from song where id=:songId")
     Cursor getSongWithIdCursor(int songId);
@@ -64,8 +64,11 @@ public interface MusicDao {
     @Query("select *from AlbumSong")
     List<AlbumSong> getAlbumSongs();
 
+    @Query("select *from AlbumSong")
+    Cursor getAlbumSongCursor();
+
     @Query("Select * from AlbumSong where album_id=:albumId and song_id= :songId")
-    Cursor getAlbumSongsWithAlbumIdAndSongId(int albumId,int songId);
+    Cursor getAlbumSongWithAlbumIdAndSongId(int albumId,int songId);
 
 
     //получить список песен переданного id альбома

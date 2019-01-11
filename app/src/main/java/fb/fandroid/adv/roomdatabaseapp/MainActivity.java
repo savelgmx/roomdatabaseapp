@@ -23,12 +23,12 @@ public class MainActivity extends AppCompatActivity {
     /*
         В таблицы Album, Songs, AlbumSongs добавить генерацию данных, примерно 3 записи.
                 (см. пример генерации в методе MainActivity#createAlbums()) по кнопке Add.
-        В MusicDao - query, insert, update, delete методы для таблиц Songs и AlbumSongs по примеру методов для таблицы Album.
-        При нажатии на кнопку Get показывать тост с содержимым всех 3х таблиц.(3*3 записей)
-        Изучить реализацию методов query()/insert()/update()/delete() в MusicProvider
+        В MusicDao - query, insert, update, delete методы для таблиц Songs и AlbumSongs по примеру методов для таблицы Album.+++
+        При нажатии на кнопку Get показывать тост с содержимым всех 3х таблиц.(3*3 записей)+++
+        Изучить реализацию методов query()/insert()/update()/delete() в MusicProvider +++
         По аналогии добавить в MusicProvider работу с таблицами Songs и AlbumSongs.
     */
-//TODO insertAlbumSongs с сохраением целостности
+//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
                 musicDao.insertAlbums(createAlbums());
                 musicDao.insertSongs(createSongs());
-                 musicDao.insertAlbumSongs(createAlbumSongs());
+                musicDao.insertAlbumSongs(createAlbumSongs());
 
 
             }
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i=0;i<3;i++){
             songs.add(new Song(i,"song "+i,"duration"+System.currentTimeMillis()));
         }
-     return songs;
+        return songs;
     }
 
     private List<AlbumSong> createAlbumSongs(){
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i=0,size=songs.size();i<size;i++) {
             builder.append(songs.get(i).toString()).append("\n");
         }
-            Toast.makeText(this, builder.toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, builder.toString(), Toast.LENGTH_LONG).show();
 
     }
 }

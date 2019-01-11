@@ -33,12 +33,19 @@ public class MusicProvider extends ContentProvider {
     private static final int ALBUMSONG_TABLE_CODE=300;
     private static final int ALBUMSONG_ROW_CODE=301;
 
+
+
     static {
         URI_MATCHER.addURI(AUTHORITY, TABLE_ALBUM, ALBUM_TABLE_CODE);
         URI_MATCHER.addURI(AUTHORITY, TABLE_ALBUM + "/*", ALBUM_ROW_CODE);
+        URI_MATCHER.addURI(AUTHORITY,TABLE_SONG,SONG_TABLE_CODE);
+        URI_MATCHER.addURI(AUTHORITY,TABLE_SONG+"/*",SONG_ROW_CODE);
+        URI_MATCHER.addURI(AUTHORITY,TABLE_ALBUMSONG,ALBUMSONG_TABLE_CODE);
+        URI_MATCHER.addURI(AUTHORITY,TABLE_ALBUMSONG+"/*",ALBUMSONG_ROW_CODE);
     }
 
     private MusicDao mMusicDao;
+    private Cursor cursor;
 
     public MusicProvider() {
     }
@@ -86,27 +93,23 @@ public class MusicProvider extends ContentProvider {
                 && (code != ALBUMSONG_ROW_CODE) && (code != ALBUMSONG_TABLE_CODE)
                 ) return null;
 
-        Cursor cursor;
-
         switch (code)
         {
             case ALBUM_TABLE_CODE:
                 cursor = mMusicDao.getAlbumsCursor();
-                return cursor;
-            case ALBUM_ROW_CODE:
+             case ALBUM_ROW_CODE:
                 cursor = mMusicDao.getAlbumWithIdCursor((int) ContentUris.parseId(uri));
-                return cursor;
+             case SONG_TABLE_CODE:
+                cursor = mMusicDao.getSongCursor();
+             case SONG_ROW_CODE:
+                cursor =mMusicDao.getSongWithIdCursor((int) ContentUris.parseId(uri));
+             case ALBUMSONG_TABLE_CODE:
+                cursor = mMusicDao.getAlbumSongCursor();
+             case ALBUMSONG_ROW_CODE:
+                cursor =mMusicDao.getAlbumSongCursor();
+         }
 
-
-        }
-
-
-        if (code == ALBUM_TABLE_CODE) {
-            cursor = mMusicDao.getAlbumsCursor();
-        } else {
-            cursor = mMusicDao.getAlbumWithIdCursor((int) ContentUris.parseId(uri));
-        }
-        return cursor;
+            return cursor;
     }
 
     @Override
@@ -133,6 +136,9 @@ public class MusicProvider extends ContentProvider {
     @Override
     public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         if (URI_MATCHER.match(uri) == ALBUM_ROW_CODE && isValuesValid(values)) {
+
+            Log.d("Roomdatabaseapp","Music Provider update method for Albums called");
+
             Album album = new Album();
             int id = (int) ContentUris.parseId(uri);
             album.setId(id);
