@@ -13,6 +13,7 @@ import android.util.Log;
 import fb.fandroid.adv.roomdatabaseapp.database.Album;
 import fb.fandroid.adv.roomdatabaseapp.database.MusicDao;
 import fb.fandroid.adv.roomdatabaseapp.database.MusicDatabase;
+import fb.fandroid.adv.roomdatabaseapp.database.Song;
 
 public class MusicProvider extends ContentProvider {
     //TODO По аналогии добавить в MusicProvider работу с таблицами Songs и AlbumSongs.
@@ -124,13 +125,29 @@ public class MusicProvider extends ContentProvider {
             album.setReleaseDate(values.getAsString("release"));
             mMusicDao.insertAlbum(album);
             return ContentUris.withAppendedId(uri, id);
-        } else {
+        }
+        if(URI_MATCHER.match(uri) == SONG_TABLE_CODE && isValuesValid(values)){
+            Song song = new Song();
+            Integer id = values.getAsInteger("id");
+            song.setId(id);
+            song.setName(values.getAsString("name"));
+            song.setDuration(values.getAsString("duration"));
+
+            return ContentUris.withAppendedId(uri, id);
+        }
+        if(URI_MATCHER.match(uri) == ALBUMSONG_TABLE_CODE && isValuesValid(values)){
+
+           // return ContentUris.withAppendedId(uri, id);
+        }
+        else {
             throw new IllegalArgumentException("cant add multiple items");
         }
     }
 
     private boolean isValuesValid(ContentValues values) {
-        return values.containsKey("id") && values.containsKey("name") && values.containsKey("release");
+        return values.containsKey("id") && values.containsKey("name") && values.containsKey("release")&&
+                values.containsKey("id") && values.containsKey("name") &&values.containsKey("duration")&&
+                values.containsKey("id") && values.containsKey("album_id") && values.containsKey("song_id");
     }
 
     @Override
