@@ -11,13 +11,12 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import fb.fandroid.adv.roomdatabaseapp.database.Album;
+import fb.fandroid.adv.roomdatabaseapp.database.AlbumSong;
 import fb.fandroid.adv.roomdatabaseapp.database.MusicDao;
 import fb.fandroid.adv.roomdatabaseapp.database.MusicDatabase;
 import fb.fandroid.adv.roomdatabaseapp.database.Song;
 
 public class MusicProvider extends ContentProvider {
-    //TODO По аналогии добавить в MusicProvider работу с таблицами Songs и AlbumSongs.
-    //TODO Дописать методы Cursor query insert update delete
     private static final String TAG = MusicProvider.class.getSimpleName();
 
     private static final String AUTHORITY = "com.elegion.roomdatabase.musicprovider";
@@ -98,19 +97,19 @@ public class MusicProvider extends ContentProvider {
         {
             case ALBUM_TABLE_CODE:
                 cursor = mMusicDao.getAlbumsCursor();
-             case ALBUM_ROW_CODE:
+            case ALBUM_ROW_CODE:
                 cursor = mMusicDao.getAlbumWithIdCursor((int) ContentUris.parseId(uri));
-             case SONG_TABLE_CODE:
+            case SONG_TABLE_CODE:
                 cursor = mMusicDao.getSongCursor();
-             case SONG_ROW_CODE:
+            case SONG_ROW_CODE:
                 cursor =mMusicDao.getSongWithIdCursor((int) ContentUris.parseId(uri));
-             case ALBUMSONG_TABLE_CODE:
+            case ALBUMSONG_TABLE_CODE:
                 cursor = mMusicDao.getAlbumSongCursor();
-             case ALBUMSONG_ROW_CODE:
+            case ALBUMSONG_ROW_CODE:
                 cursor =mMusicDao.getAlbumSongCursor();
-         }
+        }
 
-            return cursor;
+        return cursor;
     }
 
     @Override
@@ -136,8 +135,13 @@ public class MusicProvider extends ContentProvider {
             return ContentUris.withAppendedId(uri, id);
         }
         if(URI_MATCHER.match(uri) == ALBUMSONG_TABLE_CODE && isValuesValid(values)){
+            AlbumSong albumSong = new AlbumSong();
+            Integer id = values.getAsInteger("id");
+            albumSong.setId(id);
+            albumSong.setAlbumId(values.getAsInteger("album_id"));
+            albumSong.setSongId(values.getAsInteger("song_id"));
 
-           // return ContentUris.withAppendedId(uri, id);
+            return ContentUris.withAppendedId(uri, id);
         }
         else {
             throw new IllegalArgumentException("cant add multiple items");
@@ -163,7 +167,34 @@ public class MusicProvider extends ContentProvider {
             album.setReleaseDate(values.getAsString("release"));
             int updatedRows = mMusicDao.updateAlbumInfo(album);
             return updatedRows;
-        } else {
+        }
+        if(URI_MATCHER.match(uri) == SONG_TABLE_CODE && isValuesValid(values)){
+            Log.d("Roomdatabaseapp","Music Provider update method for Songs called");
+
+            Song song = new Song();
+            int id =(int)ContentUris.parseId(uri);
+            song.setId(id);
+            song.setName(values.getAsString("name"));
+            song.setDuration(values.getAsString("duration"));
+            int updatedRows = mMusicDao.updateSongInfo(song);
+
+            return updatedRows;
+
+
+        }
+
+        if(URI_MATCHER.match(uri) == ALBUMSONG_TABLE_CODE && isValuesValid(values)){
+
+            AlbumSong albumSong = new AlbumSong();
+            int id =(int)ContentUris.parseId(uri);
+            albumSong.setId(id);
+            albumSong.setSongId(values.getAsInteger("song_id"));
+            albumSong.setAlbumId(values.getAsInteger("album_id"));
+            int updateRows = mMusicDao.updateAlbumSonginfo(albumSong);
+            return updateRows;
+
+        }
+        else {
             throw new IllegalArgumentException("cant add multiple items");
         }
 
@@ -174,7 +205,17 @@ public class MusicProvider extends ContentProvider {
         if (URI_MATCHER.match(uri) == ALBUM_ROW_CODE) {
             int id = (int) ContentUris.parseId(uri);
             return mMusicDao.deleteAlbumById(id);
-        } else {
+        }
+        if(URI_MATCHER.match(uri) == SONG_ROW_CODE){
+            int id =(int) ContentUris.parseId(uri);
+            return mMusicDao.deleteSongById(id);
+        }
+
+        if(URI_MATCHER.match(uri) == ALBUMSONG_ROW_CODE){
+            int id =(int) ContentUris.parseId(uri);
+            return mMusicDao.deleteAlbumSongById(id);
+        }
+        else {
             throw new IllegalArgumentException("cant add multiple items");
         }
 

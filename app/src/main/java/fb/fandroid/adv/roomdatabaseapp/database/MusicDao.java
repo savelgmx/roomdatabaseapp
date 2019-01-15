@@ -53,7 +53,7 @@ public interface MusicDao {
 
 
   @Query("select id from song where id=:songId")
-    int getSongIdWith(int songId);
+    int getSongIdWithId(int songId);
 
     @Query("select * from song")
     Cursor getSongCursor();
@@ -95,6 +95,6 @@ public interface MusicDao {
     @Query("DELETE FROM song where id=:songId")
     int deleteSongById(int songId);
     //удалить песни альбомов по id
-    @Query("DELETE FROM albumsong where album_id=:albumId and song_id=:songId")
-    int deleteAlbumSongsById(int albumId,int songId );
+    @Query("DELETE FROM albumsong where id=:albumsongId")
+    int deleteAlbumSongById(int albumsongId );
 }

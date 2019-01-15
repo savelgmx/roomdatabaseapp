@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             //для Album
 
             int albumId=musicDao.getAlbumIdWithId(i);
-            int songId=musicDao.getSongIdWith(i);
+            int songId=musicDao.getSongIdWithId(i);
             Log.d("Roomdatabaseapp","albumId="+albumId+" songId="+songId);
 
             albumSongs.add(new AlbumSong(i, albumId, songId)); //id,album_d,song_id
