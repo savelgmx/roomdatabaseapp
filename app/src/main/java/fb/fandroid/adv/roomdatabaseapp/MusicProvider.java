@@ -88,6 +88,9 @@ public class MusicProvider extends ContentProvider {
 
         int code = URI_MATCHER.match(uri);
 
+
+        Log.d("Roomdatabaseapp","code="+code);
+
         if ((code != ALBUM_ROW_CODE) && (code != ALBUM_TABLE_CODE)
                 && (code != SONG_ROW_CODE) && (code != SONG_TABLE_CODE)
                 && (code != ALBUMSONG_ROW_CODE) && (code != ALBUMSONG_TABLE_CODE)
