@@ -24,7 +24,6 @@ public class MusicProvider extends ContentProvider {
     public static final String TABLE_SONG ="song";
     public static final String TABLE_ALBUMSONG="albumsong";
 
-    private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
     private static final int ALBUM_TABLE_CODE = 100;
     private static final int ALBUM_ROW_CODE = 101;
@@ -35,13 +34,14 @@ public class MusicProvider extends ContentProvider {
 
 
 
+    private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
     static {
         URI_MATCHER.addURI(AUTHORITY, TABLE_ALBUM, ALBUM_TABLE_CODE);
-        URI_MATCHER.addURI(AUTHORITY, TABLE_ALBUM + "/*", ALBUM_ROW_CODE);
+        URI_MATCHER.addURI(AUTHORITY, TABLE_ALBUM + "/#", ALBUM_ROW_CODE);
         URI_MATCHER.addURI(AUTHORITY,TABLE_SONG,SONG_TABLE_CODE);
-        URI_MATCHER.addURI(AUTHORITY,TABLE_SONG+"/*",SONG_ROW_CODE);
+        URI_MATCHER.addURI(AUTHORITY,TABLE_SONG+"/#",SONG_ROW_CODE);
         URI_MATCHER.addURI(AUTHORITY,TABLE_ALBUMSONG,ALBUMSONG_TABLE_CODE);
-        URI_MATCHER.addURI(AUTHORITY,TABLE_ALBUMSONG+"/*",ALBUMSONG_ROW_CODE);
+        URI_MATCHER.addURI(AUTHORITY,TABLE_ALBUMSONG+"/#",ALBUMSONG_ROW_CODE);
     }
 
     private MusicDao mMusicDao;
