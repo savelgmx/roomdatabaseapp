@@ -87,21 +87,10 @@ public class MusicProvider extends ContentProvider {
                         String[] selectionArgs, String sortOrder) {
 
         int code = URI_MATCHER.match(uri);
-
-
-        Log.d("Roomdatabaseapp","code="+code);
-
- /*       if ((code != ALBUM_ROW_CODE) && (code != ALBUM_TABLE_CODE)
-                && (code != SONG_ROW_CODE) && (code != SONG_TABLE_CODE)
-                && (code != ALBUMSONG_ROW_CODE) && (code != ALBUMSONG_TABLE_CODE)
-                ) return null;
-*/
-
         if(code==ALBUM_TABLE_CODE) {
             cursor = mMusicDao.getAlbumsCursor();
             Log.d("Roomdatabaseapp", "ALBUM_TABLE_CODE=" + ALBUM_TABLE_CODE + " cursor=" + cursor);
         }
-
         if(code== ALBUM_ROW_CODE) {
             cursor = mMusicDao.getAlbumWithIdCursor((int) ContentUris.parseId(uri));
             Log.d("Roomdatabaseapp", "ALBUM_ROW_CODE=" + ALBUM_ROW_CODE + " cursor=" + cursor);
@@ -114,26 +103,18 @@ public class MusicProvider extends ContentProvider {
             cursor = mMusicDao.getSongWithIdCursor((int) ContentUris.parseId(uri));
             Log.d("Roomdatabaseapp", "SONG_ROW_CODE=" + SONG_ROW_CODE + " cursor=" + cursor);
         }
-
         if(code== ALBUMSONG_TABLE_CODE) {
             cursor = mMusicDao.getAlbumSongCursor();
             Log.d("Roomdatabaseapp", "ALBUMSONG_TABLE_CODE=" + ALBUMSONG_TABLE_CODE + " cursor=" + cursor);
         }
-
         if(code== ALBUMSONG_ROW_CODE) {
             cursor = mMusicDao.getAlbumSongCursor();
             Log.d("Roomdatabaseapp", "ALBUMSONG_ROW_CODE=" + ALBUMSONG_ROW_CODE + " cursor=" + cursor);
         }
 
         Log.d("Roomdatabaseapp","cursor="+cursor);
-
-
-
         return cursor;
     }
-
-
-
 
     @Override
     public Uri insert(@NonNull Uri uri, ContentValues values) {
@@ -147,7 +128,26 @@ public class MusicProvider extends ContentProvider {
             album.setReleaseDate(values.getAsString("release"));
             mMusicDao.insertAlbum(album);
             return ContentUris.withAppendedId(uri, id);
-        } else {
+        }
+        if(URI_MATCHER.match(uri) == SONG_TABLE_CODE && isSongValuesValid(values)){
+            Song song = new Song();
+            Integer id = values.getAsInteger("id");
+            song.setId(id);
+            song.setName(values.getAsString("name"));
+            song.setDuration(values.getAsString("duration"));
+
+            return ContentUris.withAppendedId(uri, id);
+        }
+        if(URI_MATCHER.match(uri) == ALBUMSONG_TABLE_CODE && isAlbumValuesValid(values)) {
+            AlbumSong albumSong = new AlbumSong();
+            Integer id = values.getAsInteger("id");
+            albumSong.setId(id);
+            albumSong.setAlbumId(values.getAsInteger("album_id"));
+            albumSong.setSongId(values.getAsInteger("song_id"));
+            return ContentUris.withAppendedId(uri,id);
+        }
+
+        else {
             throw new IllegalArgumentException("cant add multiple items");
         }
     }
