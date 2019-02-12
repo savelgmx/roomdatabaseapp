@@ -19,39 +19,31 @@ public interface MusicDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAlbums(List<Album> albums);
-
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAlbum(Album albums);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertSongs(List<Song> songs);
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertSong(Song song);
 
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAlbumSongs(List<AlbumSong> albumSongs);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAlbumSong(AlbumSong albumSong);
 
     @Query("select * from album")
     List<Album> getAlbums();
-
-
     @Query("select id from album where id = :albumId")
     int getAlbumIdWithId(int albumId);
 
-
     @Query("select * from album")
     Cursor getAlbumsCursor();
-
     @Query("select * from album where id = :albumId")
     Cursor getAlbumWithIdCursor(int albumId);
 
     @Query("select * from song")
     List<Song> getSongs();
-
-
   @Query("select id from song where id=:songId")
     int getSongIdWithId(int songId);
 
@@ -91,6 +83,9 @@ public interface MusicDao {
     //удалить альбом по id
     @Query("DELETE FROM album where id = :albumId")
     int deleteAlbumById(int albumId);
+
+    @Delete
+    void deleteSong(Song song);
     //удалить песни по id
     @Query("DELETE FROM song where id=:songId")
     int deleteSongById(int songId);

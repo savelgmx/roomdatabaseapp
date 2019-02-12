@@ -118,32 +118,44 @@ public class MusicProvider extends ContentProvider {
 
     @Override
     public Uri insert(@NonNull Uri uri, ContentValues values) {
+         if (URI_MATCHER.match(uri) == ALBUM_TABLE_CODE && isAlbumValuesValid(values)) {
 
-        Log.d("Roomdatabaseapp","Music Provider insert method for Albums called");
-        if (URI_MATCHER.match(uri) == ALBUM_TABLE_CODE && isAlbumValuesValid(values)) {
+            Log.d("Roomdatabaseapp","Music Provider insert method for Albums called with uri="+uri);
+            Log.d("Roomdatabaseapp","Music Provider insert method for Albums called with urimatcher="+URI_MATCHER.match(uri));
+
             Album album = new Album();
             Integer id = values.getAsInteger("id");
             album.setId(id);
             album.setName(values.getAsString("name"));
             album.setReleaseDate(values.getAsString("release"));
-            mMusicDao.insertAlbum(album);
+            mMusicDao.insertAlbum(album);  //добавляем одиночную запись
             return ContentUris.withAppendedId(uri, id);
         }
         if(URI_MATCHER.match(uri) == SONG_TABLE_CODE && isSongValuesValid(values)){
+            Log.d("Roomdatabaseapp","Music Provider insert method for Songs called with uri="+uri);
+            Log.d("Roomdatabaseapp","Music Provider insert method for Songs called with urimatcher="+URI_MATCHER.match(uri));
+
             Song song = new Song();
             Integer id = values.getAsInteger("id");
             song.setId(id);
             song.setName(values.getAsString("name"));
             song.setDuration(values.getAsString("duration"));
 
+            mMusicDao.insertSong(song);
+
             return ContentUris.withAppendedId(uri, id);
         }
         if(URI_MATCHER.match(uri) == ALBUMSONG_TABLE_CODE && isAlbumValuesValid(values)) {
+            Log.d("Roomdatabaseapp","Music Provider insert method for AlbumSongs called with uri="+uri);
+            Log.d("Roomdatabaseapp","Music Provider insert method for AlbumSongs called with urimatcher="+URI_MATCHER.match(uri));
+
             AlbumSong albumSong = new AlbumSong();
             Integer id = values.getAsInteger("id");
             albumSong.setId(id);
             albumSong.setAlbumId(values.getAsInteger("album_id"));
             albumSong.setSongId(values.getAsInteger("song_id"));
+            mMusicDao.insertAlbumSong(albumSong);
+
             return ContentUris.withAppendedId(uri,id);
         }
 
@@ -166,7 +178,9 @@ public class MusicProvider extends ContentProvider {
     public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         if (URI_MATCHER.match(uri) == ALBUM_ROW_CODE && isAlbumValuesValid(values)) {
 
-            Log.d("Roomdatabaseapp","Music Provider update method for Albums called");
+            Log.d("Roomdatabaseapp","Music Provider update method for Albums called with uri="+uri);
+            Log.d("Roomdatabaseapp","Music Provider update method for Albums called with uriMatcher="+URI_MATCHER.match(uri));
+
 
             Album album = new Album();
             int id = (int) ContentUris.parseId(uri);
@@ -176,8 +190,9 @@ public class MusicProvider extends ContentProvider {
             int updatedRows = mMusicDao.updateAlbumInfo(album);
             return updatedRows;
         }
-        if(URI_MATCHER.match(uri) == SONG_TABLE_CODE && isSongValuesValid(values)){
-            Log.d("Roomdatabaseapp","Music Provider update method for Songs called");
+        if(URI_MATCHER.match(uri) == SONG_ROW_CODE && isSongValuesValid(values)){
+            Log.d("Roomdatabaseapp","Music Provider update method for Songs called with uri="+uri);
+            Log.d("Roomdatabaseapp","Music Provider update method for Songs called with uriMatcher="+URI_MATCHER.match(uri));
 
             Song song = new Song();
             int id =(int)ContentUris.parseId(uri);
@@ -188,7 +203,10 @@ public class MusicProvider extends ContentProvider {
 
             return updatedRows;
         }
-        if(URI_MATCHER.match(uri) == ALBUMSONG_TABLE_CODE && isAlbumSongValuesValid(values)){
+        if(URI_MATCHER.match(uri) == ALBUMSONG_ROW_CODE && isAlbumSongValuesValid(values)){
+
+            Log.d("Roomdatabaseapp","Music Provider update method for AlbumSongs called with uri="+uri);
+            Log.d("Roomdatabaseapp","Music Provider update method for AlbumSongs called with uriMatcher="+URI_MATCHER.match(uri));
 
             AlbumSong albumSong = new AlbumSong();
             int id =(int)ContentUris.parseId(uri);
@@ -209,6 +227,11 @@ public class MusicProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
+
+        Log.d("Roomdatabaseapp","Music Provider DELETE method for Songs called with uri="+uri);
+
+
+
         if (URI_MATCHER.match(uri) == ALBUM_ROW_CODE) {
             int id = (int) ContentUris.parseId(uri);
             return mMusicDao.deleteAlbumById(id);
