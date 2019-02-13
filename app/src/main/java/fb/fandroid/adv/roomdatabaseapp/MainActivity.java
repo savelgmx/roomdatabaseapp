@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
                 musicDao.insertSongs(createSongs());
                 musicDao.insertAlbumSongs(createAlbumSongs());
 
-
             }
         });
 
