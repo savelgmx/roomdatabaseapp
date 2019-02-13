@@ -59,9 +59,11 @@ public class AlbumSong {
 
     @Override
     public String toString() {
-        return "AlbumSong{" + "mId=" + mId +
-                ", mAlbumId='" + mAlbumId +
-                ", mSongId='" + mSongId + '}';
+        return "AlbumSong{" +
+                "mId=" + mId +
+                ", mAlbumId=" + mAlbumId +
+                ", mSongId=" + mSongId +
+                '}';
     }
 
 }

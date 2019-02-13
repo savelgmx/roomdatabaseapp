@@ -103,8 +103,8 @@ public class MainActivity extends AppCompatActivity {
             builder.append(songs.get(i).toString()).append("\n");
         }
 
-        for (int i=0,size=songs.size();i<size;i++) {
-            builder.append(songs.get(i).toString()).append("\n");
+        for (int i = 0, size = albumSongs.size(); i < size; i++) {
+            builder.append(albumSongs.get(i).toString()).append("\n");
         }
         Toast.makeText(this, builder.toString(), Toast.LENGTH_LONG).show();
 
