@@ -145,7 +145,7 @@ public class MusicProvider extends ContentProvider {
 
             return ContentUris.withAppendedId(uri, id);
         }
-        if(URI_MATCHER.match(uri) == ALBUMSONG_TABLE_CODE && isAlbumValuesValid(values)) {
+        if(URI_MATCHER.match(uri) == ALBUMSONG_TABLE_CODE && isAlbumSongValuesValid(values)) {
             Log.d("Roomdatabaseapp","Music Provider insert method for AlbumSongs called with uri="+uri);
             Log.d("Roomdatabaseapp","Music Provider insert method for AlbumSongs called with urimatcher="+URI_MATCHER.match(uri));
 
@@ -157,6 +157,7 @@ public class MusicProvider extends ContentProvider {
             mMusicDao.insertAlbumSong(albumSong);
 
             return ContentUris.withAppendedId(uri,id);
+
         }
 
         else {
@@ -172,7 +173,7 @@ public class MusicProvider extends ContentProvider {
     }
 
     private boolean isAlbumSongValuesValid(ContentValues values) {
-        return values.containsKey("id") && values.containsKey("song_id") && values.containsKey("album_id");
+        return values.containsKey("id")&& values.containsKey("song_id") && values.containsKey("album_id");
     }
     @Override
     public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
